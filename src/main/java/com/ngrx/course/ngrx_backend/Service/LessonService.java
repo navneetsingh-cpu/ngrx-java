@@ -16,7 +16,7 @@ public class LessonService {
         return lessonRepository.findAll();
     }
 
-    public List<Lesson> findByCourseId(Long courseId) {
+    public List<Lesson> findByCourseId(Integer courseId) {
         return lessonRepository.findByCourseId(courseId);
     }
 
@@ -24,7 +24,7 @@ public class LessonService {
         return lessonRepository.save(lesson);
     }
 
-    public void delete(Long id) {
+    public void delete(Integer id) {
         lessonRepository.deleteById(id);
     }
 }
