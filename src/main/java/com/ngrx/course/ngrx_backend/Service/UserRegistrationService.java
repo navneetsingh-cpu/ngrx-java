@@ -26,7 +26,7 @@ public class UserRegistrationService {
 
     public void createUser(UserRegistrationDTO registrationDTO) {
 
-        User user = new User(registrationDTO.getEmail(),
+        User user = new User(registrationDTO.getUsername(),
                 passwordEncoder.encode(registrationDTO.getPassword()));
 
         userRepository.save(user);

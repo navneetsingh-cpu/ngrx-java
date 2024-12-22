@@ -13,20 +13,20 @@ import java.util.stream.Collectors;
 public class CourseUserDetails implements UserDetails {
 
     private Long id;
-    private String email;
+    private String username;
     private String password;
 
 
-    public CourseUserDetails(String password, Long id, String email) {
+    public CourseUserDetails(String password, Long id, String username) {
         this.password = password;
         this.id = id;
-        this.email = email;
+        this.username = username;
     }
 
     public static CourseUserDetails build(User user) {
 
         return new CourseUserDetails(user.getPassword(),
-                user.getId(), user.getEmail());
+                user.getId(), user.getUsername());
     }
 
 

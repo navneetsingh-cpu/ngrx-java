@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserRegistrationDTO {
-    private String username;
-    private String password;
+public abstract class AbstractResponseDTO {
+    private String message;
+    private boolean succeeded;
 }
