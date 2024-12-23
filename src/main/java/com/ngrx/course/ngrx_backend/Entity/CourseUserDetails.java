@@ -13,26 +13,48 @@ import java.util.stream.Collectors;
 public class CourseUserDetails implements UserDetails {
 
     private Long id;
-    private String username;
+//    private String email;
     private String password;
+    private String username;
+    private Collection<? extends GrantedAuthority> authorities;
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 
-
-    public CourseUserDetails(String password, Long id, String username) {
+    public CourseUserDetails(Collection<? extends GrantedAuthority> authorities,
+                               String password, String username, Long id) {
+        this.authorities = authorities;
         this.password = password;
         this.id = id;
         this.username = username;
+//        this.email = email;
+        this.isEnabled = true;
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
     }
 
     public static CourseUserDetails build(User user) {
+        List<GrantedAuthority> authorities = getAuthorities(user);
 
-        return new CourseUserDetails(user.getPassword(),
-                user.getId(), user.getUsername());
+        return new CourseUserDetails(authorities, user.getPassword(),
+                user.getUsername(), user.getId());
     }
 
+    public static List<GrantedAuthority> getAuthorities(User user) {
+
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .flatMap(role -> role.getPrivileges().stream()
+                        .map(privilege -> new SimpleGrantedAuthority(privilege.getName())))
+                .collect(Collectors.toList());
+
+        return authorities;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return authorities;
     }
 
     @Override
@@ -42,7 +64,27 @@ public class CourseUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     @Override

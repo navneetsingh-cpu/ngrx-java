@@ -1,6 +1,7 @@
 package com.ngrx.course.ngrx_backend.Controller;
 
 import com.ngrx.course.ngrx_backend.Entity.Course;
+import com.ngrx.course.ngrx_backend.Entity.PayloadResponse;
 import com.ngrx.course.ngrx_backend.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,9 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public List<Course> getAllCourses() {
-        return courseService.findAll();
+    public PayloadResponse<List<Course>> getAllCourses() {
+        List<Course> courses = courseService.findAll();
+        return new PayloadResponse<>(true, "Courses retrieved successfully", courses);
     }
 
     @GetMapping("/{id}")
